@@ -21,16 +21,13 @@ class UserController extends Controller
     }
     public function index()
     {
-        // $data = User::orderBy('id')->paginate(5);
-        // return view(
-        //     'user.userList',
-        //     ['userList' => $data]
-        // )->with('i', (request()->input('page', 1) - 1) * 5);
-
-        $users = User::with(['phones', 'roles'])->get()->toArray();
-        // $users = User::with('roles')->get()->toArray();
-
-        return view('user.userList', ['users' => $users]);
+        $data = User::with(['phones', 'roles'])->get();
+        return view(
+            'user.userList',
+            ['userList' => $data]
+        )->with('i', (request()->input('page', 1) - 1) * 5);
+        
+        return view('user.userList', ['userList' => $data ]);
     }
 
     /**

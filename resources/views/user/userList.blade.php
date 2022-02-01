@@ -86,36 +86,32 @@
       <a href="{{ route('register') }}" class="btn create-btn">Create</a>
       <a href="{{ route('logout') }}" class="btn delete-btn">Logout</a>
     </div>
-    {{-- <table>
+    <table>
       <tr>
         <th>No.</th>
         <th>Name</th>
         <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th>
       </tr>
       @foreach ($userList as $user)
         <tr>
           <td>{{ $i = $i + 1 }}</td>
           <td>{{ $user->name }}</td>
           <td>{{ $user->email }}</td>
+          <td>
+            @foreach ($user->phones as $index => $phone)
+              <span>{{ $phone->phone }}</span>@if ($index != count($user->phones)) , @endif
+            @endforeach
+          </td>
+          <td>
+            @foreach ($user->roles as $index => $role)
+              <span>{{ $role->name }}</span>@if ($index != count($user->roles)) , @endif
+            @endforeach
+          </td>
         </tr>
       @endforeach
-    </table> --}}
-    <ul>
-      @foreach ($users as $user)
-      <li>{{ $user['name'] }}</li>
-      <li>
-        @foreach ($user['phones'] as $index => $phone)
-        <span>{{ $phone['phone'] }}</span>@if ($index != count($user['phones'])) , @endif
-        @endforeach
-      </li>
-      <li>
-        @foreach ($user['roles'] as $index => $role)
-        <span>{{ $role['name'] }}</span>@if ($index != count($user['roles'])) , @endif
-        @endforeach
-      </li>
-      <br>
-      @endforeach
-    </ul>
+    </table>
   </div>
 </body>
 </html>
