@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Register</title>
 </head>
 <style>
   body {
@@ -40,8 +40,8 @@
 </style>
 <body>
   <div class="container">
-    <h1>Create Todo</h1>
-    <form action="{{ route('confirm-todo') }}" method="POST">
+    <h1>Create User</h1>
+    <form action="{{ route('confirm-register') }}" method="POST">
       @csrf
       <div class="form-flex">
         <label for="name">Name</label>
@@ -55,11 +55,22 @@
         @enderror
       </div>
       <div class="form-flex">
-        <label for="instruction">Instruction</label>
-        <input id="instruction" type="text" name="instruction" value="{{ old('instruction') }}">  
+        <label for="email">Email</label>
+        <input id="email" type="text" name="email" value="{{ old('email') }}">  
       </div>
       <div class="right">
-        @error('instruction')
+        @error('email')
+          <span class="err-msg">
+            <strong>{{ $message }}</strong>
+          </span>
+        @enderror
+      </div>
+      <div class="form-flex">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" value="{{ old('password') }}">  
+      </div>
+      <div class="right">
+        @error('password')
           <span class="err-msg">
             <strong>{{ $message }}</strong>
           </span>
@@ -71,6 +82,7 @@
       </div>
     </form>
   </div>
+
 </body>
 
 </html>

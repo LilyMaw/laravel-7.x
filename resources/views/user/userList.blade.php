@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo List</title>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>User List</title>
 </head>
 <style>
   body {
@@ -82,33 +81,41 @@
 <body>
   <div class="container">
     <div class="flex-blk">
-      <h1>Todo List</h1>
-      <a href="{{ route('create-todo') }}" class="btn create-btn">Create</a>
-      <a href="{{ route('user-list') }}" class="btn create-btn">Todo</a>
+      <h1>User List</h1>
+      <a href="{{ route('todo-list') }}" class="btn create-btn">Todo</a>
+      <a href="{{ route('register') }}" class="btn create-btn">Create</a>
+      <a href="{{ route('logout') }}" class="btn delete-btn">Logout</a>
     </div>
-    <table>
+    {{-- <table>
       <tr>
         <th>No.</th>
         <th>Name</th>
-        <th>Instruction</th>
-        <th>Operation</th>
+        <th>Email</th>
       </tr>
-      @foreach ($todoList as $todo)
+      @foreach ($userList as $user)
         <tr>
           <td>{{ $i = $i + 1 }}</td>
-          <td><a href="{{ route('detail-todo', $todo->id) }}">{{ $todo->name }}</a></td>
-          <td>{{ $todo->instruction }}</td>
-          <td>
-            <a href="{{ route('edit-todo', $todo->id) }}" class="btn edit-btn">Edit</a>
-            <a href="{{ route('delete-todo', $todo->id) }}" id="delete_todo" class="btn delete-btn">Delete</a>
-          </td>
+          <td>{{ $user->name }}</td>
+          <td>{{ $user->email }}</td>
         </tr>
       @endforeach
-    </table>
-    {!! $todoList->links() !!}  
+    </table> --}}
+    <ul>
+      @foreach ($users as $user)
+      <li>{{ $user['name'] }}</li>
+      <li>
+        @foreach ($user['phones'] as $index => $phone)
+        <span>{{ $phone['phone'] }}</span>@if ($index != count($user['phones'])) , @endif
+        @endforeach
+      </li>
+      <li>
+        @foreach ($user['roles'] as $index => $role)
+        <span>{{ $role['name'] }}</span>@if ($index != count($user['roles'])) , @endif
+        @endforeach
+      </li>
+      <br>
+      @endforeach
+    </ul>
   </div>
-
-  <script src="{{ mix('/js/todo/delete.js') }}"></script>
 </body>
-
 </html>

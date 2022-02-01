@@ -30,24 +30,45 @@
     width: 60%;
     padding: 10px;
   }
+  .right {
+    display: flex;
+    justify-content: end;
+  }
+  .err-msg {
+    color: #B0413E;
+  }
 </style>
 <body>
   <div class="container">
     <h1>Edit Todo</h1>
     @foreach ($todoList as $todo)
-    <form action="{{ route('update-todo',$todo->id) }}" method="POST">
+    <form action="{{ route('edit-confirm-todo',$todo->id) }}" method="POST">
       @csrf
       <div class="form-flex">
         <label for="name">Name</label>
-        <input id="name" type="text" name="name" value="{{ $todo->name }}">
+        <input id="name" type="text" name="name" value="{{ old('name', $todo->name) }}">
+      </div>
+      <div class="right">
+        @error('name')
+          <span class="err-msg">
+            <strong>{{ $message }}</strong>
+          </span>
+        @enderror
       </div>
       <div class="form-flex">
         <label for="instruction">Instruction</label>
-        <input id="instruction" type="text" name="instruction" value="{{  $todo->instruction }}">
+        <input id="instruction" type="text" name="instruction" value="{{  old('instruction', $todo->instruction) }}">
+      </div>
+      <div class="right">
+        @error('instruction')
+          <span class="err-msg">
+            <strong>{{ $message }}</strong>
+          </span>
+        @enderror
       </div>
       <div>
-        <button type="submit">Update</button>
-        <button onclick="window.history.back()">Back</button>
+        <button type="submit">Containue</button>
+        <input type="button" onclick="window.history.back()" value="Back">
       </div>
     </form>  
     @endforeach

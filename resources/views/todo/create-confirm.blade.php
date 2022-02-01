@@ -29,26 +29,33 @@
   input[type=text] {
     width: 60%;
     padding: 10px;
-    outline: none;
+  }
+  .right {
+    display: flex;
+    justify-content: end;
+  }
+  .err-msg {
+    color: #B0413E;
   }
 </style>
 <body>
   <div class="container">
-    <h1>Detail Todo</h1>
-    @foreach ($todoList as $todo)
+    <h1>Confirm Todo</h1>
+    <form action="{{ route('store-todo') }}" method="POST">
+      @csrf
       <div class="form-flex">
         <label for="name">Name</label>
-        <input id="name" type="text" name="name" value="{{ $todo->name }}" readonly>
+        <input id="name" type="text" name="name" value="{{ $name }}" readonly>
       </div>
       <div class="form-flex">
         <label for="instruction">Instruction</label>
-        <input id="instruction" type="text" name="instruction" value="{{  $todo->instruction }}" readonly>
+        <input id="instruction" type="text" name="instruction" value="{{ $instruction }}" readonly>  
       </div>
       <div>
+        <button type="submit">Confirm</button>
         <input type="button" onclick="window.history.back()" value="Back">
       </div>
-    @endforeach
-    
+    </form>
   </div>
 </body>
 

@@ -1,7 +1,10 @@
 <?php
+
 namespace App\Http\Controllers\Todo;
 
+use App\Contracts\Service\TodoServiceInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TodoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,26 +14,30 @@ use Illuminate\Support\Facades\DB;
  */
 class TodoController extends Controller
 {
+    private $todoService;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TodoServiceInterface $todoServiceInterface)
     {
+        $this->todoService = $todoServiceInterface;
+    }
 
     /**
      * Display List
      * 
      * @return View todo list
      */
-
-    }
-    public function index() 
+    public function index()
     {
-        $todos = DB::table('todo')->get();
+        $todos = $this->todoService->getTodoList();
 
-        return view('todo.todoList', ['todoList' => $todos]);
+        return view(
+            'todo.todoList',
+            ['todoList' => $todos]
+        )->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -44,21 +51,25 @@ class TodoController extends Controller
     }
 
     /**
-     * To save new Todo
+     * To confirm new todo
+     * @param TodoRequest $request name, instruction
+     * @return View todo list
+     */
+    public function confirmTodo(TodoRequest $request)
+    {
+        return view('todo.create-confirm')
+            ->with('name', $request->name)
+            ->with('instruction', $request->instruction);
+    }
+
+    /**
+     * To store new todo
      * @param Request $request name, instruction
      * @return View todo list
      */
     public function storeTodo(Request $request)
     {
-        $name = $request->name;
-        $instruction = $request->instruction;
-    
-        DB::transaction(function () use ($name, $instruction) {
-          DB::insert(
-            'insert into todo (name, instruction) values (?, ?)',
-            [$name, $instruction]
-          );
-        });
+        $this->todoService->saveTodo($request->name, $request->instruction);
         return redirect()->route('todo-list');
     }
 
@@ -67,23 +78,36 @@ class TodoController extends Controller
      * @param id $request id
      * @return View detail page
      */
-    public function showTodo($id) 
+    public function showTodo($id)
     {
         $todos = DB::table('todo')->where('id', $id)->get();
-        return view('todo.detail',['todoList' => $todos]);
+        return view('todo.detail', ['todoList' => $todos]);
     }
 
     /**
      * To edit todo
-     * @param $request id
+     * @param id $request id
      * @return View edit page
      */
     public function editTodo($id)
     {
         $todos = DB::table('todo')->where('id', $id)->get();
-        return view('todo.edit',['todoList' => $todos]);
+        return view('todo.edit', ['todoList' => $todos]);
     }
 
+    /**
+     * To confirm the edited Todo
+     * @param TodoRequest $request name, instruction
+     * @param id $request id
+     * @return View todo list
+     */
+    public function editConfirmTodo(TodoRequest $request, $id)
+    {
+        $todos = DB::table('todo')->where('id', $id)->get();
+        return view('todo.edit-confirm', ['todoList' => $todos])
+            ->with('name', $request->name)
+            ->with('instruction', $request->instruction);
+    }
     /**
      * To update Todo
      * @param Request $request name, instruction
@@ -92,12 +116,7 @@ class TodoController extends Controller
      */
     public function updateTodo(Request $request, $id)
     {
-        $name = $request->name;
-        $instruction = $request->instruction;
-        DB::table('todo')->where('id', $id)->update([
-            'name' => $name,
-            'instruction' => $instruction,
-        ]);
+        $this->todoService->updateTodo($request, $id);
         return redirect()->route('todo-list');
     }
 
@@ -108,8 +127,7 @@ class TodoController extends Controller
      */
     public function destroyTodo($id)
     {
-        DB::table('todo')->where('id', $id)->delete();
+        $this->todoService->deleteTodo($id);
         return redirect()->route('todo-list');
     }
 }
-?>
