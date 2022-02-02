@@ -25,7 +25,7 @@ class UserController extends Controller
         return view(
             'user.userList',
             ['userList' => $data]
-        )->with('i', (request()->input('page', 1) - 1) * 5);
+        )->with('i');
         
         return view('user.userList', ['userList' => $data ]);
     }

@@ -101,12 +101,20 @@
           <td>{{ $user->email }}</td>
           <td>
             @foreach ($user->phones as $index => $phone)
-              <span>{{ $phone->phone }}</span>@if ($index != count($user->phones)) , @endif
+              @if( count( $user->phones ) !=  $index + 1 )
+                {{ $phone->phone }},
+              @else
+                {{ $phone->phone }}
+              @endif
             @endforeach
           </td>
           <td>
             @foreach ($user->roles as $index => $role)
-              <span>{{ $role->name }}</span>@if ($index != count($user->roles)) , @endif
+              @if( count( $user->roles ) !=  $index + 1 )
+                {{ $role->name }},
+              @else
+                {{ $role->name }}
+              @endif
             @endforeach
           </td>
         </tr>
