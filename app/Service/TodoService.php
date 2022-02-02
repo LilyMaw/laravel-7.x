@@ -6,14 +6,14 @@ use App\Contracts\Dao\TodoDaoInterface;
 use App\Contracts\Service\TodoServiceInterface;
 
 /**
- * Service class for post.
+ * Service class for todo.
  */
 class TodoService implements TodoServiceInterface
 {
     private $todoDao;
     /**
      * Class Constructor
-     * @param PostDaoInterface
+     * @param TodoDaoInterface
      * @return
      */
     public function __construct(TodoDaoInterface $todoDao)

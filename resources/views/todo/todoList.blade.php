@@ -84,7 +84,7 @@
     <div class="flex-blk">
       <h1>Todo List</h1>
       <a href="{{ route('create-todo') }}" class="btn create-btn">Create</a>
-      <a href="{{ route('user-list') }}" class="btn create-btn">Todo</a>
+      <a href="{{ route('user-list') }}" class="btn create-btn">User</a>
     </div>
     <table>
       <tr>

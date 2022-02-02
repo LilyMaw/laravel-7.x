@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Contracts\Service\UserServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Phone;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    private $userService;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserServiceInterface $userServiceInterface)
     {
+        $this->userService = $userServiceInterface;
     }
     public function index()
     {
-        $data = User::with(['phones', 'roles'])->get();
+        $data = $this->userService->getUserList();
         return view(
             'user.userList',
             ['userList' => $data]
@@ -33,7 +35,7 @@ class UserController extends Controller
     /**
      * To show create post view
      * 
-     * @return View create page
+     * @return View create user page
      */
     public function createUser()
     {
@@ -41,9 +43,9 @@ class UserController extends Controller
     }
 
     /**
-     * To confirm new todo
+     * To confirm new user
      * @param UserRequest $request name, email, password
-     * @return View todo list
+     * @return View register confirm page
      */
     public function confirmUser(UserRequest $request)
     {
@@ -54,18 +56,14 @@ class UserController extends Controller
     }
 
     /**
-     * To store new todo
-     * @param Request $request name, instruction
-     * @return View todo list
+     * To store new user
+     * @param Request $request name, email, password
+     * @return View user list
      */
     public function storeUser(Request $request, User $user)
     {
-        $user = new User([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        $user->save();
+        $this->userService->saveUser($request, $user);
+
         return redirect()->route('user-list');
     }
 }

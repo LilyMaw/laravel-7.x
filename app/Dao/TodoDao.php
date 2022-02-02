@@ -37,7 +37,7 @@ class TodoDao implements TodoDaoInterface
      */
     public function saveTodo($name, $instruction)
     {
-        DB::transaction(function () use ($name, $instruction) {
+        return DB::transaction(function () use ($name, $instruction) {
             DB::insert(
                 'insert into todo (name, instruction) values (?, ?)',
                 [$name, $instruction]
@@ -56,7 +56,7 @@ class TodoDao implements TodoDaoInterface
     {
         $name = $request->name;
         $instruction = $request->instruction;
-        DB::table('todo')->where('id', $id)->update([
+        return DB::table('todo')->where('id', $id)->update([
             'name' => $name,
             'instruction' => $instruction,
         ]);
@@ -71,6 +71,6 @@ class TodoDao implements TodoDaoInterface
      */
     public function deleteTodo($id)
     {
-        DB::table('todo')->where('id', $id)->delete();
+        return DB::table('todo')->where('id', $id)->delete();
     }
 }

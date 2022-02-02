@@ -15,9 +15,11 @@ class AppServiceProvider extends ServiceProvider
     {
         // Dao Registration
         $this->app->bind('App\Contracts\Dao\TodoDaoInterface', 'App\Dao\TodoDao');
+        $this->app->bind('App\Contracts\Dao\UserDaoInterface', 'App\Dao\UserDao');
 
         // Business logic registration
         $this->app->bind('App\Contracts\Service\TodoServiceInterface', 'App\Service\TodoService');
+        $this->app->bind('App\Contracts\Service\UserServiceInterface', 'App\Service\UserService');
     }
 
     /**
