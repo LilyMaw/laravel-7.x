@@ -18,7 +18,9 @@ Route::get('/login', 'Auth\AuthController@login')->name('login');
 Route::post('/post-login', 'Auth\AuthController@postLogin')->name('post-login');
 Route::get('/logout', 'Auth\AuthController@logout')->name('logout');
 
-Route::get('testManytoManyR', 'Auth\AuthController@testOnetoOneR');
+Route::get('/mail', 'MailSendController@send');
+
+Route::get('testManytoManyR', 'Auth\AuthController@testOnetoOneR')->name('aaa');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/user', 'User\UserController@index')->name('user-list');
 
@@ -39,4 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/todo/edit/{todo}', 'Todo\TodoController@updateTodo')->name('update-todo');
 
     Route::get('/todo/delete/{todo}', 'Todo\TodoController@destroyTodo')->name('delete-todo');
+
+    Route::get('/todo/generate-pdf', 'Todo\TodoController@generatePDF')->name('generate-PDF');
+    Route::get('create-record', 'Todo\TodoController@createRecord');
 });
